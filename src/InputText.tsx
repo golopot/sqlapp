@@ -8,13 +8,17 @@ const Container = styled.div`
   }
 `;
 
-export default function InputText(props: { label: string }) {
-  const { label } = props;
+export default function InputText(props: {
+  label: string;
+  value: any;
+  onChange: (event: any) => void;
+}) {
+  const { label, value, onChange } = props;
   return (
     <Container>
       <label>
         <span className="fieldName">{label}</span>
-        <input />
+        <input value={value} onChange={onChange} />
       </label>
     </Container>
   );

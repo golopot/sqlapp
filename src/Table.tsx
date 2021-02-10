@@ -24,14 +24,17 @@ export default function Table() {
   return (
     <STable>
       <thead>
-        {columns.map((d, j) => (
-          // eslint-disable-next-line react/no-array-index-key
-          <th key={j}>{d}</th>
-        ))}
+        <tr>
+          {columns.map((d, j) => (
+            // eslint-disable-next-line react/no-array-index-key
+            <th key={j}>{d}</th>
+          ))}
+        </tr>
       </thead>
       <tbody>
         {rows.map((row, i) => (
-          <tr key={row[0]}>
+          // eslint-disable-next-line react/no-array-index-key
+          <tr key={i}>
             {row.map((d, j) => (
               // eslint-disable-next-line react/no-array-index-key
               <td key={j}>{d}</td>

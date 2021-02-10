@@ -4,7 +4,6 @@ import styled from 'styled-components';
 import Sidebar from './Sidebar';
 import Topbar from './Topbar';
 import Table from './Table';
-import ConnectionForm from './ConnectionForm';
 import './App.global.css';
 
 const Container = styled.div`

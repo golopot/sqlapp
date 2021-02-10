@@ -1,10 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { uuid } from 'uuidv4';
 
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
 import InputText from './InputText';
+
+import { Connection } from './connection';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -24,10 +27,26 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export default function ConnectionModal(props: {
   open: boolean;
+  handleCreate: (conn: Connection) => void;
   handleClose: () => void;
 }) {
   const classes = useStyles();
-  const { open, handleClose } = props;
+  const { open, handleCreate, handleClose } = props;
+
+  const [host, setHost] = useState('');
+  const [user, setUser] = useState('');
+  const [password, setPassword] = useState('');
+
+  const handleCreate_ = () => {
+    handleCreate({
+      id: uuid(),
+      host,
+      user,
+      password,
+    });
+    handleClose();
+  };
+
   return (
     <Modal
       aria-labelledby="transition-modal-title"
@@ -44,11 +63,27 @@ export default function ConnectionModal(props: {
       <Fade in={open}>
         <div className={classes.paper}>
           <form>
-            <InputText label="host" />
-            <InputText label="user" />
-            <InputText label="password" />
-            <button type="button">Create</button>
-            <button type="button">Cancel</button>
+            <InputText
+              label="host"
+              value={host}
+              onChange={(ev) => setHost(ev.target.value)}
+            />
+            <InputText
+              label="user"
+              value={user}
+              onChange={(ev) => setUser(ev.target.value)}
+            />
+            <InputText
+              label="password"
+              value={password}
+              onChange={(ev) => setPassword(ev.target.value)}
+            />
+            <button type="button" onClick={handleCreate_}>
+              Create
+            </button>
+            <button type="button" onClick={handleClose}>
+              Cancel
+            </button>
           </form>
         </div>
       </Fade>

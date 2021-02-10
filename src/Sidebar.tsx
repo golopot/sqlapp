@@ -7,6 +7,7 @@ import TreeItem from '@material-ui/lab/TreeItem';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ConnectionModal from './ConnectionModal';
+import * as Connection from './connection';
 
 const useStyles = makeStyles({
   root: {
@@ -16,10 +17,26 @@ const useStyles = makeStyles({
   },
 });
 
+function connectionName(c: Connection.Connection) {
+  return `${c.user}@${c.host}`;
+}
+
 export default function Sidebar() {
   const classes = useStyles();
 
+  const [shouldLoad, setShouldLoad] = React.useState(true);
+
+  const [connections, setConnections] = React.useState(
+    [] as Connection.Connection[]
+  );
+
   const [open, setOpen] = React.useState(false);
+
+  if (shouldLoad) {
+    const conns = Connection.readConnections();
+    setConnections(conns);
+    setShouldLoad(false);
+  }
 
   const handleOpen = () => {
     setOpen(true);
@@ -29,6 +46,12 @@ export default function Sidebar() {
     setOpen(false);
   };
 
+  const handleCreate = (conn: Connection.Connection) => {
+    const conns = [...connections, conn];
+    setConnections(conns);
+    Connection.writeConnections(conns);
+  };
+
   return (
     <div>
       <TreeView
@@ -36,19 +59,21 @@ export default function Sidebar() {
         defaultCollapseIcon={<ExpandMoreIcon />}
         defaultExpandIcon={<ChevronRightIcon />}
       >
-        <TreeItem nodeId="1" label="Postgres1">
-          <TreeItem nodeId="2" label="table1" />
-          <TreeItem nodeId="3" label="table2" />
-          <TreeItem nodeId="4" label="table3" />
-        </TreeItem>
-        <TreeItem nodeId="5" label="Mariadb">
-          <TreeItem nodeId="10" label="OSS" />
-          <TreeItem nodeId="6" label="Material-UI" />
-        </TreeItem>
+        {connections.map((conn) => (
+          <TreeItem
+            nodeId={connectionName(conn)}
+            key={connectionName(conn)}
+            label={connectionName(conn)}
+          />
+        ))}
         <button type="button" onClick={handleOpen}>
           + create new connection{' '}
         </button>
-        <ConnectionModal open={open} handleClose={handleClose} />
+        <ConnectionModal
+          open={open}
+          handleCreate={handleCreate}
+          handleClose={handleClose}
+        />
       </TreeView>
     </div>
   );
