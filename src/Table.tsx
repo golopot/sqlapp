@@ -1,0 +1,44 @@
+import React from 'react';
+import styled from 'styled-components';
+
+const columns = ['name', 'telephone', 'location'];
+
+const rows = [
+  ['Maria Garcia', '(442) 094-8134', 'Vermont'],
+  ['Maria Garcia', '(442) 094-8134', 'Vermont'],
+  ['Maria Garcia', '(442) 094-8134', 'Vermont'],
+  ['Maria Garcia', '(442) 094-8134', 'Vermont'],
+];
+
+const STable = styled.table`
+  border-collapse: collapse;
+  td,
+  th {
+    min-width: 80px;
+    padding: 4px 0 4px 2px;
+    border: 1px black solid;
+  }
+`;
+
+export default function Table() {
+  return (
+    <STable>
+      <thead>
+        {columns.map((d, j) => (
+          // eslint-disable-next-line react/no-array-index-key
+          <th key={j}>{d}</th>
+        ))}
+      </thead>
+      <tbody>
+        {rows.map((row, i) => (
+          <tr key={row[0]}>
+            {row.map((d, j) => (
+              // eslint-disable-next-line react/no-array-index-key
+              <td key={j}>{d}</td>
+            ))}
+          </tr>
+        ))}
+      </tbody>
+    </STable>
+  );
+}
