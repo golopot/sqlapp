@@ -1,13 +1,11 @@
 import React, { useState } from 'react';
 import { uuid } from 'uuidv4';
-
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
 import InputText from './InputText';
-
-import { Connection } from './connection';
+import { Connector } from './connector';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -27,7 +25,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export default function ConnectionModal(props: {
   open: boolean;
-  handleCreate: (conn: Connection) => void;
+  handleCreate: (conn: Connector) => void;
   handleClose: () => void;
 }) {
   const classes = useStyles();
@@ -43,6 +41,8 @@ export default function ConnectionModal(props: {
       host,
       user,
       password,
+      databases: [],
+      driverId: 'mysql',
     });
     handleClose();
   };

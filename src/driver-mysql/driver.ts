@@ -1,5 +1,5 @@
 import Mysql from 'mysql2/promise';
-import type { Connection, ConnectionConfig } from '../driver/driver';
+import type { Connection, ConnectionConfig, Driver } from '../driver/driver';
 
 async function connect(c: ConnectionConfig): Promise<Connection> {
   const conn = await Mysql.createConnection({
@@ -29,7 +29,8 @@ async function connect(c: ConnectionConfig): Promise<Connection> {
   };
 }
 
-const driver = {
+const driver: Driver = {
+  id: 'mysql',
   connect,
 };
 

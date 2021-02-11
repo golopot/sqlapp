@@ -9,6 +9,7 @@ export interface ConnectionConfig {
 }
 
 export interface Driver {
+  id: string;
   connect(config: ConnectionConfig): Promise<Connection>;
 }
 

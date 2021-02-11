@@ -6,6 +6,7 @@ module.exports = {
     'react/jsx-props-no-spreading': 0,
     '@typescript-eslint/naming-convention': 0,
     'no-underscore-dangle': 0,
+    'prettier/prettier': 0,
   },
   parserOptions: {
     ecmaVersion: 2020,
