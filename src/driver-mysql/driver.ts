@@ -1,5 +1,18 @@
 import Mysql from 'mysql2/promise';
-import type { Connection, ConnectionConfig, Driver } from '../driver/driver';
+import { FieldPacket } from 'mysql2';
+import type {
+  Connection,
+  ConnectionConfig,
+  Driver,
+  QueryResult,
+  Column,
+} from '../driver/driver';
+
+function convertColumn(c: FieldPacket): Column {
+  return {
+    name: c.name,
+  };
+}
 
 async function connect(c: ConnectionConfig): Promise<Connection> {
   const conn = await Mysql.createConnection({
@@ -23,8 +36,13 @@ async function connect(c: ConnectionConfig): Promise<Connection> {
       return rows_.map((x) => x[col0]);
     },
 
-    async query(q: string) {
-      return conn.query(q);
+    async query(q: string): Promise<QueryResult> {
+      const r = (await conn.query(q)) as any;
+      return {
+        type: 'Rows',
+        columns: r[1].map((x) => convertColumn(x)),
+        rows: r[0],
+      };
     },
   };
 }

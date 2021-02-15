@@ -6,14 +6,18 @@ import TreeView from '@material-ui/lab/TreeView';
 import TreeItem from '@material-ui/lab/TreeItem';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import { uuid } from 'uuidv4';
 import ConnectionModal from './ConnectionModal';
 import * as Connector from './connector';
+import TabContext, { Tab } from './TabContext';
+import ConnectorContext from './ConnectorContext';
 
 const useStyles = makeStyles({
   root: {
     height: '100vh',
-    maxWidth: 250,
-    backgroundColor: 'red',
+    width: '100%',
+    overflowX: 'hidden',
+    backgroundColor: '#efefef',
   },
 });
 
@@ -35,18 +39,11 @@ function dbId(conn: Connector.Connector, db: Connector.Database): string {
 
 export default function Sidebar() {
   const classes = useStyles();
-  const [shouldLoad, setShouldLoad] = React.useState(true);
-  const [connections, setConnections] = React.useState(
-    [] as Connector.Connector[]
-  );
   const [expanded, setExpanded] = React.useState([] as string[]);
   const [open, setOpen] = React.useState(false);
 
-  if (shouldLoad) {
-    const conns = Connector.readConnections();
-    setConnections(conns);
-    setShouldLoad(false);
-  }
+  const { tabs, setTabId, setTabs } = React.useContext(TabContext);
+  const { connectors, setConnectors } = React.useContext(ConnectorContext);
 
   const handleOpen = () => {
     setOpen(true);
@@ -57,8 +54,8 @@ export default function Sidebar() {
   };
 
   const handleCreate = (conn: Connector.Connector) => {
-    const conns = [...connections, conn];
-    setConnections(conns);
+    const conns = [...connectors, conn];
+    setConnectors(conns);
     Connector.writeConnections(conns);
   };
 
@@ -68,7 +65,7 @@ export default function Sidebar() {
       try {
         const dbs = await connection.getDatabases();
         conn.databases = dbs.map((db) => ({ name: db, tables: [] }));
-        setConnections(connections.slice());
+        setConnectors(connectors.slice());
       } catch (e) {
         console.error(e);
         window.alert(e);
@@ -88,7 +85,34 @@ export default function Sidebar() {
       try {
         const tables = await connection.getTables(db.name);
         db.tables = tables;
-        setConnections(connections.slice());
+        setConnectors(connectors.slice());
+      } catch (e) {
+        console.error(e);
+        window.alert(e);
+      }
+    } catch (e) {
+      console.error(e);
+      window.alert('fail to connect');
+    }
+  };
+
+  const handleClickTable = async (
+    conn: Connector.Connector,
+    db: Connector.Database,
+    table: string
+  ) => {
+    try {
+      const connection = await Connector.connect(conn);
+      try {
+        const tab: Tab = {
+          id: uuid(),
+          name: table,
+          connectionId: conn.id,
+          database: db.name,
+          table,
+        };
+        setTabs([...tabs, tab]);
+        setTabId(tab.id);
       } catch (e) {
         console.error(e);
         window.alert(e);
@@ -107,7 +131,7 @@ export default function Sidebar() {
         defaultExpandIcon={<ChevronRightIcon />}
         expanded={expanded}
       >
-        {connections.map((conn) => (
+        {connectors.map((conn) => (
           <TreeItem
             nodeId={conn.id}
             key={conn.id}
@@ -140,6 +164,9 @@ export default function Sidebar() {
                     nodeId={`${conn.id}-${db.name}-${table}`}
                     key={`${conn.id}-${db.name}-${table}`}
                     label={table}
+                    onLabelClick={() => {
+                      handleClickTable(conn, db, table);
+                    }}
                   />
                 ))}
               </TreeItem>

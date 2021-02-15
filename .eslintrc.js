@@ -5,6 +5,7 @@ module.exports = {
     'import/no-extraneous-dependencies': 'off',
     'react/jsx-props-no-spreading': 0,
     '@typescript-eslint/naming-convention': 0,
+    '@typescript-eslint/object-curly-spacing': 0,
     'no-underscore-dangle': 0,
     'prettier/prettier': 0,
   },

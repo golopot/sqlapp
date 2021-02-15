@@ -2,6 +2,7 @@ import React from 'react';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import { makeStyles } from '@material-ui/core/styles';
+import TabContext from './TabContext';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -31,22 +32,28 @@ const useStyles = makeStyles((theme) => ({
 export default function Topbar() {
   const classes = useStyles();
 
-  const [value, setValue] = React.useState(0);
+  const { tabId, tabs, setTabId, setTabs } = React.useContext(TabContext);
 
   const handleChange = (_, newValue) => {
-    setValue(newValue);
+    setTabId(newValue);
   };
 
   return (
     <Tabs
       className={classes.root}
-      value={value}
+      value={tabId || false}
       onChange={handleChange}
-      aria-label="simple tabs example"
+      aria-label="tabs"
     >
-      <Tab className={classes.tab} disableRipple label="Item One" />
-      <Tab className={classes.tab} disableRipple label="Item Two" />
-      <Tab className={classes.tab} disableRipple label="Item Three" />
+      {tabs.map((tab) => (
+        <Tab
+          className={classes.tab}
+          disableRipple
+          label={tab.name}
+          value={tab.id}
+          key={tab.id}
+        />
+      ))}
     </Tabs>
   );
 }
