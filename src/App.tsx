@@ -2,6 +2,8 @@ import React from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import styled from 'styled-components';
 import { Resizable } from 're-resizable';
+import debounceFn from 'debounce-fn';
+import SplitPane from 'react-split-pane';
 import Sidebar from './Sidebar';
 import Topbar from './Topbar';
 import QueryResult from './QueryResult';
@@ -16,7 +18,7 @@ const Container = styled.div`
   width: 100vw;
 `;
 
-function Right() {
+function Editor() {
   const { tabId, tabs } = React.useContext(TabContext);
   const { connectors } = React.useContext(ConnectorContext);
   const tab = tabs.find((x) => x.id === tabId);
@@ -36,15 +38,35 @@ function Right() {
     );
   }
   return (
-    <div>
+    <div
+      className="editor"
+      style={{
+        backgroundColor: 'white',
+        height: '100vh',
+      }}
+    >
       <Topbar />
-      <div style={{ padding: '10px 10px' }}>
+      <div
+        style={{
+          height: 'calc(100vh - 24px)',
+          padding: '10px 10px',
+          overflowX: 'auto',
+          overflowY: 'auto',
+        }}
+      >
         <div>{tabId}</div>
         {Content}
       </div>
     </div>
   );
 }
+
+const debouncer = debounceFn(
+  (fn: any, x) => {
+    fn(x);
+  },
+  { wait: 100, before: true }
+);
 
 function Hello() {
   const [tabId, setTabId] = React.useState('');
@@ -57,12 +79,14 @@ function Hello() {
     <TabContext.Provider value={{ tabs, tabId, setTabId, setTabs }}>
       <ConnectorContext.Provider value={{ connectors, setConnectors }}>
         <Container>
-          <Resizable>
-            <Sidebar />
-          </Resizable>
-          <div style={{ flexGrow: 1, backgroundColor: '#e8e8e8' }}>
-            <Right />
-          </div>
+          <SplitPane split="vertical" minSize={50} defaultSize={200}>
+            <div>
+              <Sidebar />
+            </div>
+            <div>
+              <Editor />
+            </div>
+          </SplitPane>
         </Container>
       </ConnectorContext.Provider>
     </TabContext.Provider>

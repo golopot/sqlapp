@@ -7,6 +7,7 @@ import TabContext from './TabContext';
 const useStyles = makeStyles((theme) => ({
   root: {
     minHeight: 5,
+    height: 24,
   },
   tab: {
     textTransform: 'none',
@@ -44,6 +45,8 @@ export default function Topbar() {
       value={tabId || false}
       onChange={handleChange}
       aria-label="tabs"
+      variant="scrollable"
+      scrollButtons="off"
     >
       {tabs.map((tab) => (
         <Tab
