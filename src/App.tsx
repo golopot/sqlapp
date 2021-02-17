@@ -5,61 +5,18 @@ import { Resizable } from 're-resizable';
 import debounceFn from 'debounce-fn';
 import SplitPane from 'react-split-pane';
 import Sidebar from './Sidebar';
-import Topbar from './Topbar';
-import QueryResult from './QueryResult';
 import TabContext, { Tab } from './TabContext';
-import './App.global.css';
 import ConnectorContext from './ConnectorContext';
+import './App.global.css';
 import * as Connector from './connector';
+
+import Editor from './Editor';
 
 const Container = styled.div`
   display: flex;
   height: 100vh;
   width: 100vw;
 `;
-
-function Editor() {
-  const { tabId, tabs } = React.useContext(TabContext);
-  const { connectors } = React.useContext(ConnectorContext);
-  const tab = tabs.find((x) => x.id === tabId);
-
-  let Content: JSX.Element;
-
-  if (tab === undefined) {
-    Content = <div />;
-  } else {
-    const connector = connectors.find((x) => x.id === tab.connectionId);
-    Content = (
-      <QueryResult
-        connector={connector as Connector.Connector}
-        database={tab.database}
-        tableName={tab.table}
-      />
-    );
-  }
-  return (
-    <div
-      className="editor"
-      style={{
-        backgroundColor: 'white',
-        height: '100vh',
-      }}
-    >
-      <Topbar />
-      <div
-        style={{
-          height: 'calc(100vh - 24px)',
-          padding: '10px 10px',
-          overflowX: 'auto',
-          overflowY: 'auto',
-        }}
-      >
-        <div>{tabId}</div>
-        {Content}
-      </div>
-    </div>
-  );
-}
 
 const debouncer = debounceFn(
   (fn: any, x) => {
@@ -71,7 +28,6 @@ const debouncer = debounceFn(
 function Hello() {
   const [tabId, setTabId] = React.useState('');
   const [tabs, setTabs] = React.useState([] as Tab[]);
-
   const [connectors, setConnectors] = React.useState(
     Connector.readConnections()
   );
