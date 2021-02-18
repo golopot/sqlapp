@@ -2,7 +2,10 @@ import React from 'react';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import { makeStyles } from '@material-ui/core/styles';
-import TabContext from './TabContext';
+import TabContext, { Tab as TabType } from './TabContext';
+import { Menu, MenuItem, getCurrentWindow } from './contextMenu';
+
+import { without } from './helpers';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -39,6 +42,32 @@ export default function Topbar() {
     setTabId(newValue);
   };
 
+  const handleCloseTab = (tab: TabType) => {
+    const i = tabs.findIndex((t) => t === tab);
+    if (i === -1) {
+      console.error('cannot find tab');
+      return;
+    }
+    const newTabs = without(tabs, tab);
+
+    if (tab.id === tabId) {
+      if (newTabs.length === 0) {
+        setTabId('');
+        return;
+      }
+
+      let index = 0;
+      if (i < newTabs.length) {
+        index = i;
+      } else {
+        index = i - 1;
+      }
+      setTabId(newTabs[index].id);
+    }
+
+    setTabs(newTabs);
+  };
+
   return (
     <Tabs
       className={classes.root}
@@ -55,6 +84,19 @@ export default function Topbar() {
           label={tab.name}
           value={tab.id}
           key={tab.id}
+          onContextMenu={(event) => {
+            event.preventDefault();
+            const menu = new Menu();
+            menu.append(
+              new MenuItem({
+                label: 'Close',
+                click() {
+                  handleCloseTab(tab);
+                },
+              })
+            );
+            menu.popup({ window: getCurrentWindow() });
+          }}
         />
       ))}
     </Tabs>

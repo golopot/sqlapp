@@ -1,13 +1,29 @@
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const noImports = require('./.eslintrc-import');
+
 module.exports = {
-  extends: 'erb',
+  extends: [
+    'airbnb',
+    // 'plugin:react/recommended',
+    'plugin:@typescript-eslint/recommended',
+    'plugin:jest/recommended',
+    'plugin:react-hooks/recommended',
+    'prettier',
+    'prettier/react',
+  ],
+
   rules: {
     // A temporary hack related to IDE not resolving correct package.json
     'import/no-extraneous-dependencies': 'off',
     'react/jsx-props-no-spreading': 0,
+    'react/jsx-filename-extension': 0,
     '@typescript-eslint/naming-convention': 0,
     '@typescript-eslint/object-curly-spacing': 0,
     'no-underscore-dangle': 0,
     'prettier/prettier': 0,
+    'no-use-before-define': 0,
+    'no-param-reassign': 0,
+    ...noImports,
   },
   parserOptions: {
     ecmaVersion: 2020,

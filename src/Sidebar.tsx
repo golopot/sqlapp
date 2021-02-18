@@ -11,6 +11,7 @@ import ConnectionModal from './ConnectionModal';
 import * as Connector from './connector';
 import TabContext, { Tab } from './TabContext';
 import ConnectorContext from './ConnectorContext';
+import { Menu, MenuItem, getCurrentWindow } from './contextMenu';
 
 const useStyles = makeStyles({
   root: {
@@ -53,8 +54,14 @@ export default function Sidebar() {
     setOpen(false);
   };
 
-  const handleCreate = (conn: Connector.Connector) => {
+  const handleCreateConnector = (conn: Connector.Connector) => {
     const conns = [...connectors, conn];
+    setConnectors(conns);
+    Connector.writeConnections(conns);
+  };
+
+  const handleDeleteConnector = (conn: Connector.Connector) => {
+    const conns = without(connectors, conn);
     setConnectors(conns);
     Connector.writeConnections(conns);
   };
@@ -144,6 +151,30 @@ export default function Sidebar() {
               setExpanded([...expanded, conn.id]);
               handleClickConnection(conn);
             }}
+            onContextMenu={(event) => {
+              console.log(event);
+              event.preventDefault();
+
+              const menu = new Menu();
+              menu.append(
+                new MenuItem({
+                  label: 'Edit Connection',
+                  click() {
+                    console.log(123);
+                  },
+                })
+              );
+              menu.append(
+                new MenuItem({
+                  label: 'Delete Connection',
+                  click() {
+                    handleDeleteConnector(conn);
+                  },
+                })
+              );
+              menu.append(new MenuItem({ type: 'separator' }));
+              menu.popup({ window: getCurrentWindow() });
+            }}
           >
             {conn.databases.map((db) => (
               <TreeItem
@@ -178,7 +209,7 @@ export default function Sidebar() {
         </button>
         <ConnectionModal
           open={open}
-          handleCreate={handleCreate}
+          handleCreate={handleCreateConnector}
           handleClose={handleClose}
         />
       </TreeView>

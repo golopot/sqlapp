@@ -11,6 +11,7 @@ import './App.global.css';
 import * as Connector from './connector';
 
 import Editor from './Editor';
+import './contextMenu';
 
 const Container = styled.div`
   display: flex;
