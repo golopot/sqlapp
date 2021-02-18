@@ -35,7 +35,10 @@ export default function ConnectionModal(props: {
   const [user, setUser] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleCreate_ = () => {
+  const hostRef = React.useRef(null as HTMLInputElement | null);
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
     handleCreate({
       id: uuid(),
       host,
@@ -62,15 +65,18 @@ export default function ConnectionModal(props: {
     >
       <Fade in={open}>
         <div className={classes.paper}>
-          <form>
+          <form onSubmit={handleSubmit}>
             <InputText
               label="host"
               value={host}
+              ref={hostRef}
+              required
               onChange={(ev) => setHost(ev.target.value)}
             />
             <InputText
               label="user"
               value={user}
+              required
               onChange={(ev) => setUser(ev.target.value)}
             />
             <InputText
@@ -78,9 +84,7 @@ export default function ConnectionModal(props: {
               value={password}
               onChange={(ev) => setPassword(ev.target.value)}
             />
-            <button type="button" onClick={handleCreate_}>
-              Create
-            </button>
+            <button type="submit">Create</button>
             <button type="button" onClick={handleClose}>
               Cancel
             </button>

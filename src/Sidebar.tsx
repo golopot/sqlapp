@@ -1,7 +1,6 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 
-import styled from 'styled-components';
 import TreeView from '@material-ui/lab/TreeView';
 import TreeItem from '@material-ui/lab/TreeItem';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
@@ -46,11 +45,11 @@ export default function Sidebar() {
   const { tabs, setTabId, setTabs } = React.useContext(TabContext);
   const { connectors, setConnectors } = React.useContext(ConnectorContext);
 
-  const handleOpen = () => {
+  const handleOpenModal = () => {
     setOpen(true);
   };
 
-  const handleClose = () => {
+  const handleCloseModal = () => {
     setOpen(false);
   };
 
@@ -109,7 +108,7 @@ export default function Sidebar() {
     table: string
   ) => {
     try {
-      const connection = await Connector.connect(conn);
+      await Connector.connect(conn);
       try {
         const tab: Tab = {
           id: uuid(),
@@ -172,7 +171,6 @@ export default function Sidebar() {
                   },
                 })
               );
-              menu.append(new MenuItem({ type: 'separator' }));
               menu.popup({ window: getCurrentWindow() });
             }}
           >
@@ -189,9 +187,14 @@ export default function Sidebar() {
                   setExpanded([...expanded, dbId(conn, db)]);
                   handleClickDatabase(conn, db);
                 }}
+                onContextMenu={(event) => {
+                  event.preventDefault();
+                  event.stopPropagation();
+                }}
               >
                 {db.tables.map((table) => (
                   <TreeItem
+                    className="TreeItem"
                     nodeId={`${conn.id}-${db.name}-${table}`}
                     key={`${conn.id}-${db.name}-${table}`}
                     label={table}
@@ -204,13 +207,13 @@ export default function Sidebar() {
             ))}
           </TreeItem>
         ))}
-        <button type="button" onClick={handleOpen}>
+        <button type="button" onClick={handleOpenModal}>
           + create new connection
         </button>
         <ConnectionModal
           open={open}
           handleCreate={handleCreateConnector}
-          handleClose={handleClose}
+          handleClose={handleCloseModal}
         />
       </TreeView>
     </div>

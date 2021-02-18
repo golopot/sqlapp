@@ -112,3 +112,11 @@ a:hover {
 .Resizer.disabled:hover {
   border-color: transparent;
 }
+
+.MuiTreeItem-label {
+  user-select: none;
+}
+
+.TreeItem .MuiTreeItem-label:hover {
+  background-color: #e7e7e7;
+}

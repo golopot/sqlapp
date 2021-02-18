@@ -13,16 +13,16 @@ module.exports = {
   ],
 
   rules: {
-    // A temporary hack related to IDE not resolving correct package.json
-    'import/no-extraneous-dependencies': 'off',
     'react/jsx-props-no-spreading': 0,
     'react/jsx-filename-extension': 0,
+    'react/require-default-props': 0,
     '@typescript-eslint/naming-convention': 0,
     '@typescript-eslint/object-curly-spacing': 0,
     'no-underscore-dangle': 0,
     'prettier/prettier': 0,
     'no-use-before-define': 0,
     'no-param-reassign': 0,
+    '@typescript-eslint/no-empty-function': 0,
     ...noImports,
   },
   parserOptions: {
