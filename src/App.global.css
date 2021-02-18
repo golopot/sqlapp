@@ -38,10 +38,6 @@ button {
   transition: transform ease-in 0.1s;
 }
 
-button:hover {
-  transform: scale(1.05);
-}
-
 li {
   list-style: none;
 }

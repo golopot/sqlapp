@@ -35,7 +35,7 @@ export default function Editor() {
       <Topbar />
       <div
         style={{
-          height: 'calc(100vh - 24px)',
+          height: 'calc(100vh - 36px)',
           padding: '10px 10px',
           overflowX: 'auto',
           overflowY: 'auto',

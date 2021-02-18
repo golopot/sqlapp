@@ -9,20 +9,24 @@ import { without } from './helpers';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    minHeight: 5,
-    height: 24,
+    height: 36,
+    minHeight: 36,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   tab: {
+    fontSize: 14,
     textTransform: 'none',
-    minWidth: 40,
-    width: 100,
+    minWidth: 120,
     minHeight: 5,
-    padding: '2px 2px',
+    paddingLeft: '6px',
+    paddingRight: '6px',
+    fontFamily: 'inherit',
     fontWeight: theme.typography.fontWeightRegular,
-    '&:hover': {
-      color: '#40a9ff',
-      opacity: 1,
-    },
+    // '&:hover': {
+    //   color: '#40a9ff',
+    //   opacity: 1,
+    // },
     '&$selected': {
       color: '#1890ff',
       fontWeight: theme.typography.fontWeightMedium,
@@ -30,6 +34,13 @@ const useStyles = makeStyles((theme) => ({
     '&:focus': {
       color: '#40a9ff',
     },
+  },
+  wrapper: {
+    alignItems: 'unset',
+    justifyContent: 'center',
+  },
+  indicator: {
+    display: 'none',
   },
 }));
 
@@ -70,7 +81,10 @@ export default function Topbar() {
 
   return (
     <Tabs
-      className={classes.root}
+      classes={{
+        root: classes.root,
+        indicator: classes.indicator,
+      }}
       value={tabId || false}
       onChange={handleChange}
       aria-label="tabs"
@@ -79,7 +93,7 @@ export default function Topbar() {
     >
       {tabs.map((tab) => (
         <Tab
-          className={classes.tab}
+          classes={{ root: classes.tab, wrapper: classes.wrapper }}
           disableRipple
           label={tab.name}
           value={tab.id}
