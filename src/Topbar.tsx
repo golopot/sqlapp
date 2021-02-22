@@ -79,6 +79,16 @@ export default function Topbar() {
     setTabs(newTabs);
   };
 
+  const handleCloseToTheRight = (tab: TabType) => {
+    const i = tabs.findIndex((t) => t === tab);
+    if (i === -1) {
+      console.error('cannot find tab');
+      return;
+    }
+    const newTabs = tabs.slice(0, i + 1);
+    setTabs(newTabs);
+  };
+
   return (
     <Tabs
       classes={{
@@ -109,7 +119,20 @@ export default function Topbar() {
                 },
               })
             );
+            menu.append(
+              new MenuItem({
+                label: 'Close tabs to the right',
+                click() {
+                  handleCloseToTheRight(tab);
+                },
+              })
+            );
             menu.popup({ window: getCurrentWindow() });
+          }}
+          onAuxClick={(event) => {
+            if (event.button === 1) {
+              handleCloseTab(tab);
+            }
           }}
         />
       ))}

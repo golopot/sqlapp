@@ -10,7 +10,7 @@
     "lint": "cross-env NODE_ENV=development eslint . --cache --ext .js,.jsx,.ts,.tsx",
     "package": "rm -rf src/dist && yarn build && electron-builder build --publish never",
     "postinstall": "node -r @babel/register .erb/scripts/CheckNativeDep.js && electron-builder install-app-deps && yarn cross-env NODE_ENV=development webpack --config ./.erb/configs/webpack.config.renderer.dev.dll.babel.js",
-    "start": "node -r @babel/register ./.erb/scripts/CheckPortInUse.js && npm run start:renderer",
+    "start": "node ./.erb/scripts/CheckPortInUse.js && npm run start:renderer",
     "start:main": "cross-env NODE_ENV=development electron -r ./.erb/scripts/BabelRegister ./src/main.dev.ts",
     "start:renderer": "cross-env NODE_ENV=development webpack serve --config ./.erb/configs/webpack.config.renderer.dev.babel.js",
     "test": "jest"
@@ -243,6 +243,7 @@
     "react-tabtab": "^2.0.0",
     "regenerator-runtime": "^0.13.5",
     "source-map-support": "^0.5.19",
+    "split-view": "file:../split-view",
     "styled-components": "^5.2.1",
     "uuidv4": "^6.2.6"
   },

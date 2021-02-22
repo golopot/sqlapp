@@ -11,6 +11,7 @@ import * as Connector from './connector';
 import TabContext, { Tab } from './TabContext';
 import ConnectorContext from './ConnectorContext';
 import { Menu, MenuItem, getCurrentWindow } from './contextMenu';
+import { without } from './helpers';
 
 const useStyles = makeStyles({
   root: {
@@ -23,14 +24,6 @@ const useStyles = makeStyles({
 
 function connectionName(c: Connector.Connector) {
   return `${c.user}@${c.host}`;
-}
-
-function without<T>(a: T[], e: T): T[] {
-  const i = a.findIndex((x) => x === e);
-  if (i === -1) {
-    return a.slice();
-  }
-  return [...a.slice(0, i), ...a.slice(i + 1)];
 }
 
 function dbId(conn: Connector.Connector, db: Connector.Database): string {

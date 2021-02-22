@@ -42,7 +42,9 @@ export default function QueryResult({
   React.useEffect(() => {
     (async () => {
       const conn = await Connector.connect(connector);
-      const r = await conn.query(`SELECT * FROM ${database}.${tableName}`);
+      const r = await conn.query(
+        `SELECT * FROM ${database}.${tableName} LIMIT 200`
+      );
       setData(r);
     })();
   }, [connector, database, tableName]);

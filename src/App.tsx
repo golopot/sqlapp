@@ -3,12 +3,13 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import styled from 'styled-components';
 import { Resizable } from 're-resizable';
 import debounceFn from 'debounce-fn';
-import SplitPane from 'react-split-pane';
 import Sidebar from './Sidebar';
 import TabContext, { Tab } from './TabContext';
 import ConnectorContext from './ConnectorContext';
 import './App.global.css';
 import * as Connector from './connector';
+
+import { SplitViewContainer } from './split-view';
 
 import Editor from './Editor';
 import './contextMenu';
@@ -36,14 +37,12 @@ function Hello() {
     <TabContext.Provider value={{ tabs, tabId, setTabId, setTabs }}>
       <ConnectorContext.Provider value={{ connectors, setConnectors }}>
         <Container>
-          <SplitPane split="vertical" minSize={50} defaultSize={200}>
-            <div>
-              <Sidebar />
-            </div>
-            <div>
-              <Editor />
-            </div>
-          </SplitPane>
+          <SplitViewContainer
+            views={[
+              { element: <Sidebar />, initialSize: 260 },
+              { element: <Editor /> },
+            ]}
+          ></SplitViewContainer>
         </Container>
       </ConnectorContext.Provider>
     </TabContext.Provider>
