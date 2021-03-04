@@ -20,6 +20,9 @@ const useStyles = makeStyles({
     overflowX: 'hidden',
     backgroundColor: '#efefef',
   },
+  group: {
+    transition: 'none',
+  },
 });
 
 function connectionName(c: Connector.Connector) {
@@ -132,6 +135,7 @@ export default function Sidebar() {
       >
         {connectors.map((conn) => (
           <TreeItem
+            classes={{ group: classes.group }}
             nodeId={conn.id}
             key={conn.id}
             label={connectionName(conn)}
@@ -169,6 +173,7 @@ export default function Sidebar() {
           >
             {conn.databases.map((db) => (
               <TreeItem
+                classes={{ group: classes.group }}
                 nodeId={`${conn.id}-${db.name}`}
                 key={`${conn.id}-${db.name}`}
                 label={db.name}
@@ -187,6 +192,7 @@ export default function Sidebar() {
               >
                 {db.tables.map((table) => (
                   <TreeItem
+                    classes={{ group: classes.group }}
                     className="TreeItem"
                     nodeId={`${conn.id}-${db.name}-${table}`}
                     key={`${conn.id}-${db.name}-${table}`}
