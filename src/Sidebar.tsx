@@ -193,7 +193,6 @@ export default function Sidebar() {
                 {db.tables.map((table) => (
                   <TreeItem
                     classes={{ group: classes.group }}
-                    className="TreeItem"
                     nodeId={`${conn.id}-${db.name}-${table}`}
                     key={`${conn.id}-${db.name}-${table}`}
                     label={table}

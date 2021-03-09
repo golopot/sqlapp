@@ -113,8 +113,8 @@ a:hover {
   user-select: none;
 }
 
-.TreeItem .MuiTreeItem-label:hover {
-  background-color: #e7e7e7;
+.MuiTreeItem-label:hover {
+  background-color: #e7e7e7 !important;
 }
 
 .split-view-container {
