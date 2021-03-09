@@ -1,29 +1,19 @@
 import React from 'react';
 import Topbar from './Topbar';
 import QueryResult from './QueryResult';
-import TabContext, { Tab } from './TabContext';
+import TabContext from './TabContext';
 import ConnectorContext from './ConnectorContext';
 import * as Connector from './connector';
+
+function findConnector(connectors: Connector.Connector[], id: string) {
+  return connectors.find((x) => x.id === id) as Connector.Connector;
+}
 
 export default function Editor() {
   const { tabId, tabs } = React.useContext(TabContext);
   const { connectors } = React.useContext(ConnectorContext);
   const tab = tabs.find((x) => x.id === tabId);
 
-  let Content: JSX.Element;
-
-  if (tab === undefined) {
-    Content = <div />;
-  } else {
-    const connector = connectors.find((x) => x.id === tab.connectionId);
-    Content = (
-      <QueryResult
-        connector={connector as Connector.Connector}
-        database={tab.database}
-        tableName={tab.table}
-      />
-    );
-  }
   return (
     <div
       className="editor"
@@ -41,8 +31,15 @@ export default function Editor() {
           overflowY: 'auto',
         }}
       >
-        <div>{tabId}</div>
-        {Content}
+        {tab === undefined ? (
+          <div />
+        ) : (
+          <QueryResult
+            connector={findConnector(connectors, tab.connectionId)}
+            database={tab.database}
+            tableName={tab.table}
+          />
+        )}
       </div>
     </div>
   );

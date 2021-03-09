@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import * as Connector from './connector';
 import { QueryResult as Result } from './driver/driver';
+import ReactDataGrid from 'react-data-grid';
 
 // const columns = ['name', 'telephone', 'location'];
 
@@ -51,27 +52,12 @@ export default function QueryResult({
 
   return (
     <div>
-      <STable>
-        <thead>
-          <tr>
-            {columns.map((c, j) => (
-              // eslint-disable-next-line react/no-array-index-key
-              <th key={j}>{c.name}</th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {rows.map((row, i) => (
-            // eslint-disable-next-line react/no-array-index-key
-            <tr key={i}>
-              {columns.map((c, j) => (
-                // eslint-disable-next-line react/no-array-index-key
-                <td key={j}>{String(row[c.name])}</td>
-              ))}
-            </tr>
-          ))}
-        </tbody>
-      </STable>
+      <ReactDataGrid
+        columns={columns.map((x) => ({ key: x.name, name: x.name }))}
+        rowGetter={(i) => rows[i]}
+        rowsCount={rows.length}
+        minHeight={500}
+      />
     </div>
   );
 }
