@@ -32,7 +32,7 @@ export default function Editor() {
         ref={ref}
         style={{
           height: 'calc(100vh - 36px)',
-          padding: '10px 10px',
+          padding: '0',
           overflowX: 'auto',
           overflowY: 'auto',
         }}
