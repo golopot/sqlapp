@@ -27,10 +27,12 @@ export default function QueryResult({
   connector,
   database,
   tableName,
+  height,
 }: {
   connector: Connector.Connector;
   database: string;
   tableName: string;
+  height: number;
 }) {
   const [data, setData] = React.useState({
     type: 'Rows',
@@ -56,7 +58,7 @@ export default function QueryResult({
         columns={columns.map((x) => ({ key: x.name, name: x.name }))}
         rowGetter={(i) => rows[i]}
         rowsCount={rows.length}
-        minHeight={500}
+        minHeight={height}
       />
     </div>
   );
