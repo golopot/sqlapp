@@ -48,7 +48,21 @@ export default function QueryResult({
       const r = await conn.query(
         `SELECT * FROM ${database}.${tableName} LIMIT 200`
       );
-      setData(r);
+
+      const formattedRows = [] as any[];
+
+      for (const row of r.rows) {
+        const newRow = {} as any;
+        for (const col of r.columns) {
+          newRow[col.name] = String(row[col.name]);
+        }
+        formattedRows.push(newRow);
+      }
+      setData({
+        type: 'Rows',
+        columns: r.columns,
+        rows: formattedRows,
+      });
     })();
   }, [connector, database, tableName]);
 
