@@ -46,13 +46,30 @@ export default function QueryResult({
     })();
   }, [connector, database, tableName]);
 
+  function handleGridRowsUpdated({ fromRow, toRow, updated }) {
+    for (let i = fromRow; i <= toRow; i++) {
+      rows[i] = { ...rows[i], ...updated };
+    }
+    setData({
+      type: 'Rows',
+      columns,
+      rows,
+    });
+  }
+
   return (
     <div>
       <ReactDataGrid
-        columns={columns.map((x) => ({ key: x.name, name: x.name }))}
+        columns={columns.map((x) => ({
+          key: x.name,
+          name: x.name,
+          editable: true,
+        }))}
         rowGetter={(i) => rows[i]}
         rowsCount={rows.length}
         minHeight={height}
+        onGridRowsUpdated={handleGridRowsUpdated}
+        enableCellSelect={true}
       />
     </div>
   );
