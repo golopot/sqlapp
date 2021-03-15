@@ -13,11 +13,13 @@ module.exports = {
   ],
 
   rules: {
+    "no-console": 0,
     'react/jsx-props-no-spreading': 0,
     'react/jsx-filename-extension': 0,
     'react/require-default-props': 0,
     '@typescript-eslint/naming-convention': 0,
     '@typescript-eslint/object-curly-spacing': 0,
+    "@typescript-eslint/no-var-requires": 0,
     'no-underscore-dangle': 0,
     'prettier/prettier': 0,
     'no-use-before-define': 0,

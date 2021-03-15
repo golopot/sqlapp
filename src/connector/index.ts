@@ -43,7 +43,7 @@ export async function connect(conn: Connector): Promise<Driver.Connection> {
   return connection;
 }
 
-export function writeConnections(conns: Connector[]) {
+export function writeConnections(conns: Connector[]): void {
   const s = JSON.stringify(conns);
   fs.writeFileSync(getFilePath(), s);
 }

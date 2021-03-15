@@ -1,13 +1,16 @@
 import React from 'react';
 
-declare var ResizeObserver: any;
+declare const ResizeObserver: any;
 
 function noop() {}
 
 export default function useDocumentSize(
   ref,
   handleSizeChange: () => void = noop
-) {
+): {
+  width: number;
+  height: number;
+} {
   const [width, setWidth] = React.useState(0);
   const [height, setHeight] = React.useState(0);
 
