@@ -2,6 +2,8 @@ import fs from 'fs';
 import * as Driver from '../driver/driver';
 import mysqlDriver from '../driver-mysql/driver';
 
+import os from 'os';
+import path from 'path';
 const drivers = [mysqlDriver];
 
 export interface Database {
@@ -19,7 +21,7 @@ export interface Connector {
 }
 
 function getFilePath(): string {
-  return '/home/jchn/sql.json';
+  return path.join(os.homedir(), 'sql.json');
 }
 
 export function getDriver(conn: Connector): Driver.Driver {
@@ -47,10 +49,14 @@ export function writeConnections(conns: Connector[]) {
 }
 
 export function readConnections(): Connector[] {
-  const s = String(fs.readFileSync(getFilePath()));
-
-  if (s === '') {
-    return [];
+  let s = '';
+  try {
+    s = String(fs.readFileSync(getFilePath()));
+  } catch (e) {
+    if (e.code === 'ENOENT') {
+      return [];
+    }
+    throw e;
   }
 
   try {
