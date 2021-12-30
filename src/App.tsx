@@ -1,8 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import styled from 'styled-components';
-import { Resizable } from 're-resizable';
-import debounceFn from 'debounce-fn';
 import Sidebar from './Sidebar';
 import TabContext, { Tab } from './TabContext';
 import ConnectorContext from './ConnectorContext';
@@ -20,13 +18,6 @@ const Container = styled.div`
   width: 100vw;
 `;
 
-const debouncer = debounceFn(
-  (fn: any, x) => {
-    fn(x);
-  },
-  { wait: 100, before: true }
-);
-
 function Hello() {
   const [tabId, setTabId] = React.useState('');
   const [tabs, setTabs] = React.useState([] as Tab[]);
@@ -39,17 +30,17 @@ function Hello() {
         <Container>
           <SplitViewContainer
             views={[
-              { element: <Sidebar />, initialSize: 260 },
-              { element: <Editor /> },
+              { element: <Sidebar />, initialSize: 260, key: 'sidebar' },
+              { element: <Editor />, key: 'editor' },
             ]}
-          ></SplitViewContainer>
+          />
         </Container>
       </ConnectorContext.Provider>
     </TabContext.Provider>
   );
 }
 
-export default function App() {
+export default function App(): React.ReactElement {
   return (
     <Router>
       <Switch>

@@ -69,7 +69,7 @@ export default function QueryResult({
         rowsCount={rows.length}
         minHeight={height}
         onGridRowsUpdated={handleGridRowsUpdated}
-        enableCellSelect={true}
+        enableCellSelect
       />
     </div>
   );

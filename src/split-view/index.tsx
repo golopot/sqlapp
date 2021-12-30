@@ -1,7 +1,5 @@
 import React from 'react';
 
-declare var ResizeObserver: any;
-
 interface Size {
   width: number;
   height: number;
@@ -24,27 +22,32 @@ interface DragStart {
 }
 
 interface ViewProp {
+  key: string;
   initialSize?: number;
   minSize?: number;
   element: React.ReactNode;
 }
 
-export function SplitViewContainer({ views }: { views: ViewProp[] }) {
+export function SplitViewContainer({
+  views,
+}: {
+  views: ViewProp[];
+}): React.ReactElement {
   const [sizes, setSizes] = React.useState([] as Size[]);
   const [dragStart, setDragStart] = React.useState(
     undefined as DragStart | undefined
   );
 
-  const ref = React.useRef(null);
+  const ref = React.useRef<HTMLDivElement>(null);
 
   const handleSizeInit = () => {
-    const containerWidth = (ref.current as any).clientWidth;
-    const containerHeight = (ref.current as any).clientHeight;
+    const containerWidth = ref.current?.clientWidth ?? 0;
+    const containerHeight = ref.current?.clientHeight ?? 0;
 
     let sumOfWidths = 0;
     let undefinedCount = 0;
     for (const view of views) {
-      if (view.initialSize == undefined) {
+      if (view.initialSize === undefined) {
         undefinedCount++;
       } else {
         sumOfWidths += view.initialSize;
@@ -64,8 +67,7 @@ export function SplitViewContainer({ views }: { views: ViewProp[] }) {
   };
 
   const handleSizeChange = () => {
-    const containerWidth = (ref.current as any).clientWidth;
-    const containerHeight = (ref.current as any).clientHeight;
+    const containerWidth = ref.current!.clientWidth;
 
     const lastWidth =
       containerWidth -
@@ -80,10 +82,10 @@ export function SplitViewContainer({ views }: { views: ViewProp[] }) {
   }, [0]);
 
   React.useEffect(() => {
-    const observer = new ResizeObserver(() => {
+    const observer = new window.ResizeObserver(() => {
       handleSizeChange();
     });
-    observer.observe(ref.current);
+    observer.observe(ref.current!);
 
     return function cleanup() {
       observer.disconnect();
@@ -103,11 +105,12 @@ export function SplitViewContainer({ views }: { views: ViewProp[] }) {
     setSizes(sizes.slice());
   };
 
-  const handleMouseUp = (event: React.MouseEvent) => {
+  const handleMouseUp = () => {
     setDragStart(undefined);
   };
 
   return (
+    // eslint-disable-next-line jsx-a11y/no-static-element-interactions
     <div
       className="split-view-container"
       onMouseMove={handleMouseMove}
@@ -116,7 +119,7 @@ export function SplitViewContainer({ views }: { views: ViewProp[] }) {
     >
       {views.map((view, i) => {
         return (
-          <React.Fragment key={i}>
+          <React.Fragment key={view.key}>
             <div
               className="split-view-view"
               style={{
@@ -157,7 +160,7 @@ function SplitViewBar({ sizes, index, setDragStart }: any) {
           y: event.clientY,
           width: sizes[index].width,
           nextWidth: sizes[index + 1].width,
-          index: index,
+          index,
         });
       }}
       style={{
@@ -166,7 +169,7 @@ function SplitViewBar({ sizes, index, setDragStart }: any) {
         left: getOffsetLeft(sizes, index + 1),
       }}
       tabIndex={-1}
-    ></div>
+    />
   );
 }
 
