@@ -1,11 +1,9 @@
 import React from 'react';
 
-declare const ResizeObserver: any;
-
 function noop() {}
 
 export default function useDocumentSize(
-  ref,
+  ref: React.RefObject<HTMLDivElement>,
   handleSizeChange: () => void = noop
 ): {
   width: number;
@@ -15,22 +13,22 @@ export default function useDocumentSize(
   const [height, setHeight] = React.useState(0);
 
   React.useEffect(() => {
-    setWidth(ref.current.clientWidth);
-    setHeight(ref.current.clientHeight);
-  });
+    setWidth(ref.current!.clientWidth);
+    setHeight(ref.current!.clientHeight);
+  }, [ref]);
 
   React.useEffect(() => {
     const observer = new ResizeObserver(() => {
-      setWidth(ref.current.clientWidth);
-      setHeight(ref.current.clientHeight);
+      setWidth(ref.current!.clientWidth);
+      setHeight(ref.current!.clientHeight);
       handleSizeChange();
     });
-    observer.observe(ref.current);
+    observer.observe(ref.current!);
 
     return function cleanup() {
       observer.disconnect();
     };
-  }, [0]);
+  }, [ref, handleSizeChange]);
 
   return { width, height };
 }

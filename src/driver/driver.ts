@@ -22,7 +22,7 @@ export interface Column {
 export interface Rows {
   type: 'Rows';
   columns: Column[];
-  rows: any[];
+  rows: any[]; // eslint-disable-line @typescript-eslint/no-explicit-any
 }
 
 export interface Connection {

@@ -13,7 +13,7 @@ export default function QueryResult({
   database: string;
   tableName: string;
   height: number;
-}) {
+}): React.ReactElement {
   const [data, setData] = React.useState({
     type: 'Rows',
     columns: [],
@@ -29,9 +29,11 @@ export default function QueryResult({
         `SELECT * FROM ${database}.${tableName} LIMIT 200`
       );
 
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const formattedRows = [] as any[];
 
       for (const row of r.rows) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const newRow = {} as any;
         for (const col of r.columns) {
           newRow[col.name] = String(row[col.name]);

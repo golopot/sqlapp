@@ -10,7 +10,7 @@ function findConnector(connectors: Connector.Connector[], id: string) {
   return connectors.find((x) => x.id === id) as Connector.Connector;
 }
 
-export default function Editor() {
+export default function Editor(): React.ReactElement {
   const { tabId, tabs } = React.useContext(TabContext);
   const { connectors } = React.useContext(ConnectorContext);
   const tab = tabs.find((x) => x.id === tabId);

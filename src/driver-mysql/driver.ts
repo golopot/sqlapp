@@ -37,11 +37,11 @@ async function connect(c: ConnectionConfig): Promise<Connection> {
     },
 
     async query(q: string): Promise<QueryResult> {
-      const r = (await conn.query(q)) as any;
+      const r = await conn.query(q);
       return {
         type: 'Rows',
         columns: r[1].map((x) => convertColumn(x)),
-        rows: r[0],
+        rows: r[0] as any[], // eslint-disable-line @typescript-eslint/no-explicit-any
       };
     },
   };

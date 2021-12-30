@@ -27,15 +27,13 @@ export default function ConnectionModal(props: {
   open: boolean;
   handleCreate: (conn: Connector) => void;
   handleClose: () => void;
-}) {
+}): React.ReactElement {
   const classes = useStyles();
   const { open, handleCreate, handleClose } = props;
 
   const [host, setHost] = useState('');
   const [user, setUser] = useState('');
   const [password, setPassword] = useState('');
-
-  const hostRef = React.useRef(null as HTMLInputElement | null);
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -69,7 +67,6 @@ export default function ConnectionModal(props: {
             <InputText
               label="host"
               value={host}
-              ref={hostRef}
               required
               onChange={(ev) => setHost(ev.target.value)}
             />

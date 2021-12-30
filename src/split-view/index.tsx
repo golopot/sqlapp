@@ -28,6 +28,32 @@ interface ViewProp {
   element: React.ReactNode;
 }
 
+function handleSizeInit({ ref, views, sizes, setSizes }) {
+  const containerWidth = ref.current!.clientWidth;
+  const containerHeight = ref.current!.clientHeight;
+
+  let sumOfWidths = 0;
+  let undefinedCount = 0;
+  for (const view of views) {
+    if (view.initialSize === undefined) {
+      undefinedCount++;
+    } else {
+      sumOfWidths += view.initialSize;
+    }
+  }
+
+  const spreadedWidth = (containerWidth - sumOfWidths) / undefinedCount;
+  for (const view of views) {
+    const width =
+      view.initialSize === undefined ? spreadedWidth : view.initialSize;
+    sizes.push({
+      width,
+      height: containerHeight,
+    });
+  }
+  setSizes(sizes.slice());
+}
+
 export function SplitViewContainer({
   views,
 }: {
@@ -39,32 +65,6 @@ export function SplitViewContainer({
   );
 
   const ref = React.useRef<HTMLDivElement>(null);
-
-  const handleSizeInit = () => {
-    const containerWidth = ref.current?.clientWidth ?? 0;
-    const containerHeight = ref.current?.clientHeight ?? 0;
-
-    let sumOfWidths = 0;
-    let undefinedCount = 0;
-    for (const view of views) {
-      if (view.initialSize === undefined) {
-        undefinedCount++;
-      } else {
-        sumOfWidths += view.initialSize;
-      }
-    }
-
-    const spreadedWidth = (containerWidth - sumOfWidths) / undefinedCount;
-    for (const view of views) {
-      const width =
-        view.initialSize === undefined ? spreadedWidth : view.initialSize;
-      sizes.push({
-        width,
-        height: containerHeight,
-      });
-    }
-    setSizes(sizes.slice());
-  };
 
   const handleSizeChange = () => {
     const containerWidth = ref.current!.clientWidth;
@@ -78,7 +78,12 @@ export function SplitViewContainer({
   };
 
   React.useEffect(() => {
-    handleSizeInit();
+    handleSizeInit({
+      ref,
+      setSizes,
+      sizes,
+      views,
+    });
   }, [0]);
 
   React.useEffect(() => {
@@ -145,7 +150,15 @@ export function SplitViewContainer({
   );
 }
 
-function SplitViewBar({ sizes, index, setDragStart }: any) {
+function SplitViewBar({
+  sizes,
+  index,
+  setDragStart,
+}: {
+  sizes: any[];
+  index: number;
+  setDragStart: any;
+}) {
   return (
     <div
       className="split-view-bar"

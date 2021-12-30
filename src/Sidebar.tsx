@@ -33,7 +33,7 @@ function dbId(conn: Connector.Connector, db: Connector.Database): string {
   return `${conn.id}-${db.name}`;
 }
 
-export default function Sidebar() {
+export default function Sidebar(): React.ReactElement {
   const classes = useStyles();
   const [expanded, setExpanded] = React.useState([] as string[]);
   const [open, setOpen] = React.useState(false);

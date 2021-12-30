@@ -8,31 +8,23 @@ const Container = styled.div`
   }
 `;
 
-const InputText = React.forwardRef(
-  (
-    props: {
-      label: string;
-      value: any;
-      onChange: (event: any) => void;
-      required?: boolean;
-    },
-    ref: any
-  ) => {
-    const { label, value, onChange, required } = props;
-    return (
-      <Container>
-        <label>
-          <span className="fieldName">{label}</span>
-          <input
-            value={value}
-            onChange={onChange}
-            required={required}
-            ref={ref}
-          />
-        </label>
-      </Container>
-    );
-  }
-);
-
-export default InputText;
+export default function InputText({
+  label,
+  value,
+  onChange,
+  required,
+}: {
+  label: string;
+  value: string;
+  onChange: React.ChangeEventHandler<HTMLInputElement>;
+  required?: boolean;
+}): React.ReactElement {
+  return (
+    <Container>
+      <label>
+        <span className="fieldName">{label}</span>
+        <input value={value} onChange={onChange} required={required} />
+      </label>
+    </Container>
+  );
+}

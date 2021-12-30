@@ -44,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Topbar() {
+export default function Topbar(): React.ReactElement {
   const classes = useStyles();
 
   const { tabId, tabs, setTabId, setTabs } = React.useContext(TabContext);
