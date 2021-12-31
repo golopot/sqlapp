@@ -12,6 +12,7 @@ import TabContext, { Tab } from './TabContext';
 import ConnectorContext from './ConnectorContext';
 import { Menu, MenuItem, getCurrentWindow } from './contextMenu';
 import { without } from './helpers';
+import { useAlert } from './Alerts';
 
 const useStyles = makeStyles({
   root: {
@@ -40,6 +41,8 @@ export default function Sidebar(): React.ReactElement {
 
   const { tabs, setTabId, setTabs } = React.useContext(TabContext);
   const { connectors, setConnectors } = React.useContext(ConnectorContext);
+
+  const alert = useAlert();
 
   const handleOpenModal = () => {
     setOpen(true);
@@ -70,11 +73,11 @@ export default function Sidebar(): React.ReactElement {
         setConnectors(connectors.slice());
       } catch (e) {
         console.error(e);
-        window.alert(e);
+        alert(e);
       }
     } catch (e) {
       console.error(e);
-      window.alert('fail to connect');
+      alert('fail to connect');
     }
   };
 
@@ -90,11 +93,11 @@ export default function Sidebar(): React.ReactElement {
         setConnectors(connectors.slice());
       } catch (e) {
         console.error(e);
-        window.alert(e);
+        alert(e);
       }
     } catch (e) {
       console.error(e);
-      window.alert('fail to connect');
+      alert('fail to connect');
     }
   };
 
@@ -117,11 +120,11 @@ export default function Sidebar(): React.ReactElement {
         setTabId(tab.id);
       } catch (e) {
         console.error(e);
-        window.alert(e);
+        alert(e);
       }
     } catch (e) {
       console.error(e);
-      window.alert('fail to connect');
+      alert('fail to connect');
     }
   };
 
@@ -207,6 +210,15 @@ export default function Sidebar(): React.ReactElement {
         ))}
         <button type="button" onClick={handleOpenModal}>
           + create new connection
+        </button>
+
+        <button
+          type="button"
+          onClick={() => {
+            alert('123');
+          }}
+        >
+          alert
         </button>
         <ConnectionModal
           open={open}

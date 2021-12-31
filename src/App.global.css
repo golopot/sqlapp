@@ -137,3 +137,9 @@ a:hover {
 .split-view-bar:focus {
   outline: none;
 }
+
+.alerts {
+  position: absolute;
+  top: 0;
+  right: 0;
+}

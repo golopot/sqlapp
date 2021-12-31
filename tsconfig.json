@@ -13,7 +13,7 @@
     /* Additional Checks */
     "noImplicitAny": false,
     "noUnusedLocals": true,
-    "noUnusedParameters": true,
+    "noUnusedParameters": false,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
     /* Module Resolution Options */

@@ -11,6 +11,7 @@ import { SplitViewContainer } from './split-view';
 
 import Editor from './Editor';
 import './contextMenu';
+import Alerts from './Alerts';
 
 const Container = styled.div`
   display: flex;
@@ -24,6 +25,7 @@ function Hello() {
   const [connectors, setConnectors] = React.useState(
     Connector.readConnections()
   );
+
   return (
     <TabContext.Provider value={{ tabs, tabId, setTabId, setTabs }}>
       <ConnectorContext.Provider value={{ connectors, setConnectors }}>
@@ -34,6 +36,7 @@ function Hello() {
               { element: <Editor />, key: 'editor' },
             ]}
           />
+          <Alerts />
         </Container>
       </ConnectorContext.Provider>
     </TabContext.Provider>
