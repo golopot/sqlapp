@@ -10,7 +10,6 @@ const productionPlugins = [
   // babel-preset-react-optimize
   require('@babel/plugin-transform-react-constant-elements'),
   require('@babel/plugin-transform-react-inline-elements'),
-  require('babel-plugin-transform-react-remove-prop-types'),
 ];
 
 module.exports = (api) => {
@@ -25,11 +24,6 @@ module.exports = (api) => {
       require('@babel/preset-typescript'),
       [require('@babel/preset-react'), { development }],
     ],
-    plugins: [
-      // Stage 3
-      [require('@babel/plugin-proposal-class-properties'), { loose: true }],
-
-      ...(development ? developmentPlugins : productionPlugins),
-    ],
+    plugins: [...(development ? developmentPlugins : productionPlugins)],
   };
 };

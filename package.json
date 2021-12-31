@@ -53,7 +53,9 @@
       "prettier --ignore-path .eslintignore --single-quote --write"
     ]
   },
-  "browserslist": [],
+  "browserslist": [
+    "chrome 90"
+  ],
   "prettier": {
     "singleQuote": true,
     "overrides": [
