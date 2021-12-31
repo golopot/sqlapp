@@ -11,6 +11,8 @@ import Editor from './Editor';
 import './contextMenu';
 import Alerts from './Alerts';
 
+import 'antd/dist/antd.css';
+
 function Hello() {
   const [tabId, setTabId] = React.useState('');
   const [tabs, setTabs] = React.useState([] as Tab[]);
