@@ -1,105 +1,6 @@
 {
   "name": "electron-react-boilerplate",
-  "productName": "ElectronReact",
   "description": "Electron application boilerplate based on React, React Router, Webpack, React Fast Refresh for rapid application development",
-  "scripts": {
-    "build": "concurrently \"yarn build:main\" \"yarn build:renderer\"",
-    "build:main": "cross-env NODE_ENV=production webpack --config ./.erb/configs/webpack.config.main.prod.babel.js",
-    "build:renderer": "cross-env NODE_ENV=production webpack --config ./.erb/configs/webpack.config.renderer.prod.babel.js",
-    "rebuild": "electron-rebuild --parallel --types prod,dev,optional --module-dir src",
-    "lint": "cross-env NODE_ENV=development eslint . --cache --ext .js,.jsx,.ts,.tsx",
-    "package": "rm -rf src/dist && yarn build && electron-builder build --publish never",
-    "postinstall": "node -r @babel/register .erb/scripts/CheckNativeDep.js && electron-builder install-app-deps && yarn cross-env NODE_ENV=development webpack --config ./.erb/configs/webpack.config.renderer.dev.dll.babel.js",
-    "start": "node ./.erb/scripts/CheckPortInUse.js && npm run start:renderer",
-    "start:main": "cross-env NODE_ENV=development electron -r ./.erb/scripts/BabelRegister ./src/main.dev.ts",
-    "start:renderer": "cross-env NODE_ENV=development webpack serve --config ./.erb/configs/webpack.config.renderer.dev.babel.js",
-    "test": "jest"
-  },
-  "lint-staged": {
-    "{*.json,.{babelrc,eslintrc,prettierrc}}": [
-      "prettier --ignore-path .eslintignore --parser json --write"
-    ],
-    "*.{css,scss}": [
-      "prettier --ignore-path .eslintignore --single-quote --write"
-    ],
-    "*.{html,md,yml}": [
-      "prettier --ignore-path .eslintignore --single-quote --write"
-    ]
-  },
-  "build": {
-    "productName": "ElectronReact",
-    "appId": "org.erb.ElectronReact",
-    "files": [
-      "dist/",
-      "node_modules/",
-      "index.html",
-      "main.prod.js",
-      "main.prod.js.map",
-      "package.json"
-    ],
-    "afterSign": ".erb/scripts/Notarize.js",
-    "mac": {
-      "target": [
-        "dmg"
-      ],
-      "type": "distribution",
-      "hardenedRuntime": true,
-      "entitlements": "assets/entitlements.mac.plist",
-      "entitlementsInherit": "assets/entitlements.mac.plist",
-      "gatekeeperAssess": false
-    },
-    "dmg": {
-      "contents": [
-        {
-          "x": 130,
-          "y": 220
-        },
-        {
-          "x": 410,
-          "y": 220,
-          "type": "link",
-          "path": "/Applications"
-        }
-      ]
-    },
-    "win": {
-      "target": [
-        "nsis"
-      ]
-    },
-    "linux": {
-      "target": [
-        "AppImage"
-      ],
-      "category": "Development"
-    },
-    "directories": {
-      "app": "src",
-      "buildResources": "assets",
-      "output": "release"
-    },
-    "extraResources": [
-      "./assets/**"
-    ],
-    "publish": {
-      "provider": "github",
-      "owner": "electron-react-boilerplate",
-      "repo": "electron-react-boilerplate"
-    }
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/electron-react-boilerplate/electron-react-boilerplate.git"
-  },
-  "author": {
-    "name": "Chiawen Chen",
-    "email": "golopot@gmail.com"
-  },
-  "contributors": [],
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/electron-react-boilerplate/electron-react-boilerplate/issues"
-  },
   "keywords": [
     "electron",
     "boilerplate",
@@ -112,12 +13,67 @@
     "reload"
   ],
   "homepage": "https://github.com/electron-react-boilerplate/electron-react-boilerplate#readme",
+  "bugs": {
+    "url": "https://github.com/electron-react-boilerplate/electron-react-boilerplate/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/electron-react-boilerplate/electron-react-boilerplate.git"
+  },
+  "license": "MIT",
+  "author": {
+    "name": "Chiawen Chen",
+    "email": "golopot@gmail.com"
+  },
+  "contributors": [],
+  "scripts": {
+    "build": "concurrently \"yarn build:main\" \"yarn build:renderer\"",
+    "build:main": "cross-env NODE_ENV=production webpack --config ./.erb/configs/webpack.config.main.prod.babel.js",
+    "build:renderer": "cross-env NODE_ENV=production webpack --config ./.erb/configs/webpack.config.renderer.prod.babel.js",
+    "postinstall": "node -r @babel/register .erb/scripts/CheckNativeDep.js && electron-builder install-app-deps && yarn cross-env NODE_ENV=development webpack --config ./.erb/configs/webpack.config.renderer.dev.dll.babel.js",
+    "lint": "cross-env NODE_ENV=development eslint . --cache --ext .js,.jsx,.ts,.tsx",
+    "package": "rm -rf src/dist && yarn build && electron-builder build --publish never",
+    "rebuild": "electron-rebuild --parallel --types prod,dev,optional --module-dir src",
+    "start": "node ./.erb/scripts/CheckPortInUse.js && npm run start:renderer",
+    "start:main": "cross-env NODE_ENV=development electron -r ./.erb/scripts/BabelRegister ./src/main.dev.ts",
+    "start:renderer": "cross-env NODE_ENV=development webpack serve --config ./.erb/configs/webpack.config.renderer.dev.babel.js",
+    "test": "jest"
+  },
+  "husky": {
+    "hooks": {}
+  },
+  "lint-staged": {
+    "{*.json,.{babelrc,eslintrc,prettierrc}}": [
+      "prettier --ignore-path .eslintignore --parser json --write"
+    ],
+    "*.{css,scss}": [
+      "prettier --ignore-path .eslintignore --single-quote --write"
+    ],
+    "*.{html,md,yml}": [
+      "prettier --ignore-path .eslintignore --single-quote --write"
+    ]
+  },
+  "browserslist": [],
+  "prettier": {
+    "singleQuote": true,
+    "overrides": [
+      {
+        "files": [
+          ".prettierrc",
+          ".babelrc",
+          ".eslintrc"
+        ],
+        "options": {
+          "parser": "json"
+        }
+      }
+    ]
+  },
   "jest": {
-    "testURL": "http://localhost/",
-    "moduleNameMapper": {
-      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/.erb/mocks/fileMock.js",
-      "\\.(css|less|sass|scss)$": "identity-obj-proxy"
-    },
+    "moduleDirectories": [
+      "node_modules",
+      "src/node_modules"
+    ],
     "moduleFileExtensions": [
       "js",
       "jsx",
@@ -125,13 +81,40 @@
       "tsx",
       "json"
     ],
-    "moduleDirectories": [
-      "node_modules",
-      "src/node_modules"
-    ],
+    "moduleNameMapper": {
+      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/.erb/mocks/fileMock.js",
+      "\\.(css|less|sass|scss)$": "identity-obj-proxy"
+    },
     "setupFiles": [
       "./.erb/scripts/CheckBuildsExist.js"
-    ]
+    ],
+    "testURL": "http://localhost/"
+  },
+  "dependencies": {
+    "@material-ui/core": "^4.11.3",
+    "@material-ui/icons": "^4.11.2",
+    "@material-ui/lab": "^4.0.0-alpha.57",
+    "@types/mysql": "^2.15.17",
+    "debounce-fn": "^4.0.0",
+    "electron-context-menu": "^2.4.0",
+    "electron-debug": "^3.1.0",
+    "electron-log": "^4.2.4",
+    "electron-updater": "^4.3.4",
+    "history": "^5.0.0",
+    "mysql": "^2.18.1",
+    "mysql2": "^2.2.5",
+    "re-resizable": "^6.9.0",
+    "react": "^17.0.1",
+    "react-data-grid": "^6.1.0",
+    "react-dom": "^17.0.1",
+    "react-hook-form": "^6.15.1",
+    "react-router-dom": "^5.2.0",
+    "react-split-pane": "^0.1.92",
+    "react-tabtab": "^2.0.0",
+    "regenerator-runtime": "^0.13.5",
+    "source-map-support": "^0.5.19",
+    "styled-components": "^5.2.1",
+    "uuidv4": "^6.2.6"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
@@ -222,56 +205,76 @@
     "webpack-merge": "^5.4.0",
     "yarn-deduplicate": "^3.1.0"
   },
-  "dependencies": {
-    "@material-ui/core": "^4.11.3",
-    "@material-ui/icons": "^4.11.2",
-    "@material-ui/lab": "^4.0.0-alpha.57",
-    "@types/mysql": "^2.15.17",
-    "debounce-fn": "^4.0.0",
-    "electron-context-menu": "^2.4.0",
-    "electron-debug": "^3.1.0",
-    "electron-log": "^4.2.4",
-    "electron-updater": "^4.3.4",
-    "history": "^5.0.0",
-    "mysql": "^2.18.1",
-    "mysql2": "^2.2.5",
-    "re-resizable": "^6.9.0",
-    "react": "^17.0.1",
-    "react-data-grid": "^6.1.0",
-    "react-dom": "^17.0.1",
-    "react-hook-form": "^6.15.1",
-    "react-router-dom": "^5.2.0",
-    "react-split-pane": "^0.1.92",
-    "react-tabtab": "^2.0.0",
-    "regenerator-runtime": "^0.13.5",
-    "source-map-support": "^0.5.19",
-    "styled-components": "^5.2.1",
-    "uuidv4": "^6.2.6"
+  "build": {
+    "productName": "ElectronReact",
+    "appId": "org.erb.ElectronReact",
+    "files": [
+      "dist/",
+      "node_modules/",
+      "index.html",
+      "main.prod.js",
+      "main.prod.js.map",
+      "package.json"
+    ],
+    "afterSign": ".erb/scripts/Notarize.js",
+    "mac": {
+      "target": [
+        "dmg"
+      ],
+      "type": "distribution",
+      "hardenedRuntime": true,
+      "entitlements": "assets/entitlements.mac.plist",
+      "entitlementsInherit": "assets/entitlements.mac.plist",
+      "gatekeeperAssess": false
+    },
+    "dmg": {
+      "contents": [
+        {
+          "x": 130,
+          "y": 220
+        },
+        {
+          "x": 410,
+          "y": 220,
+          "type": "link",
+          "path": "/Applications"
+        }
+      ]
+    },
+    "win": {
+      "target": [
+        "nsis"
+      ]
+    },
+    "linux": {
+      "target": [
+        "AppImage"
+      ],
+      "category": "Development"
+    },
+    "directories": {
+      "app": "src",
+      "buildResources": "assets",
+      "output": "release"
+    },
+    "extraResources": [
+      "./assets/**"
+    ],
+    "publish": {
+      "provider": "github",
+      "owner": "electron-react-boilerplate",
+      "repo": "electron-react-boilerplate"
+    }
+  },
+  "collective": {
+    "url": "https://opencollective.com/electron-react-boilerplate-594"
   },
   "devEngines": {
     "node": ">=10.x",
     "npm": ">=6.x",
     "yarn": ">=1.21.3"
   },
-  "collective": {
-    "url": "https://opencollective.com/electron-react-boilerplate-594"
-  },
-  "browserslist": [],
-  "prettier": {
-    "overrides": [
-      {
-        "files": [
-          ".prettierrc",
-          ".babelrc",
-          ".eslintrc"
-        ],
-        "options": {
-          "parser": "json"
-        }
-      }
-    ],
-    "singleQuote": true
-  },
+  "productName": "ElectronReact",
   "renovate": {
     "extends": [
       "bliss"
@@ -279,8 +282,5 @@
     "baseBranches": [
       "next"
     ]
-  },
-  "husky": {
-    "hooks": {}
   }
 }
