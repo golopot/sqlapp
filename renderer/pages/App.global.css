@@ -108,6 +108,7 @@ a:hover {
 
 .split-view-bar {
   width: 4px;
+  background-color: red;
   z-index: 10;
 }
 .split-view-bar:hover {

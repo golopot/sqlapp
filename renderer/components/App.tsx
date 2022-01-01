@@ -3,7 +3,7 @@ import Sidebar from "./Sidebar";
 import TabContext, { Tab } from "./TabContext";
 import ConnectorContext from "./ConnectorContext";
 import { readConnections } from "./connector/connector";
-import { SplitViewContainer } from "./split-view";
+import { SplitViews } from "./split-view";
 import Editor from "./Editor";
 import Alerts from "./Alerts";
 
@@ -16,8 +16,8 @@ export default function Hello() {
   return (
     <TabContext.Provider value={{ tabs, tabId, setTabId, setTabs }}>
       <ConnectorContext.Provider value={{ connectors, setConnectors }}>
-        <div>
-          <SplitViewContainer
+        <div style={{ width: "100vw", height: "100vh" }}>
+          <SplitViews
             views={[
               { element: <Sidebar />, initialSize: 260, key: "sidebar" },
               { element: <Editor />, key: "editor" },

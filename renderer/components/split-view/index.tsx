@@ -1,14 +1,11 @@
-import React from 'react';
+import React from "react";
 
-interface Size {
-  width: number;
-  height: number;
-}
+type Size = number | undefined;
 
 function getOffsetLeft(sizes: Size[], index: number) {
   let sum = 0;
   for (let i = 0; i < index; i++) {
-    sum += sizes[i]?.width ?? 0;
+    sum += sizes[i] ?? 0;
   }
   return sum;
 }
@@ -16,8 +13,6 @@ function getOffsetLeft(sizes: Size[], index: number) {
 interface DragStart {
   x: number;
   y: number;
-  width: number;
-  nextWidth: number;
   index: number;
 }
 
@@ -28,74 +23,30 @@ interface ViewProp {
   element: React.ReactNode;
 }
 
-function handleSizeInit({ ref, views, sizes, setSizes }) {
-  const containerWidth = ref.current!.clientWidth;
-  const containerHeight = ref.current!.clientHeight;
+const DEFAULT_SIZE = 100;
 
-  let sumOfWidths = 0;
-  let undefinedCount = 0;
-  for (const view of views) {
-    if (view.initialSize === undefined) {
-      undefinedCount++;
-    } else {
-      sumOfWidths += view.initialSize;
-    }
-  }
+function getLinePositions(views: ViewProp[]): number[] {
+  const positions = [];
 
-  const spreadedWidth = (containerWidth - sumOfWidths) / undefinedCount;
-  for (const view of views) {
-    const width =
-      view.initialSize === undefined ? spreadedWidth : view.initialSize;
-    sizes.push({
-      width,
-      height: containerHeight,
-    });
+  let lastPosition = 0;
+  for (let i = 0; i < views.length - 1; i++) {
+    positions[i] = views[i].initialSize || DEFAULT_SIZE + lastPosition;
+    lastPosition = positions[i];
   }
-  setSizes(sizes.slice());
+  return positions;
 }
 
-export function SplitViewContainer({
+export function SplitViews({
   views,
+  direction = "horizontal",
 }: {
   views: ViewProp[];
+  direction?: "horizontal" | "vertical";
 }): React.ReactElement {
-  const [sizes, setSizes] = React.useState([] as Size[]);
+  const [positions, setPositions] = React.useState(getLinePositions(views));
   const [dragStart, setDragStart] = React.useState(
     undefined as DragStart | undefined
   );
-
-  const ref = React.useRef<HTMLDivElement>(null);
-
-  const handleSizeChange = () => {
-    const containerWidth = ref.current!.clientWidth;
-
-    const lastWidth =
-      containerWidth -
-      sum(sizes.slice(0, sizes.length - 1).map((x) => x.width));
-
-    sizes[sizes.length - 1].width = lastWidth;
-    setSizes(sizes.slice());
-  };
-
-  React.useEffect(() => {
-    handleSizeInit({
-      ref,
-      setSizes,
-      sizes,
-      views,
-    });
-  }, [0]);
-
-  React.useEffect(() => {
-    const observer = new window.ResizeObserver(() => {
-      handleSizeChange();
-    });
-    observer.observe(ref.current!);
-
-    return function cleanup() {
-      observer.disconnect();
-    };
-  }, [0]);
 
   const viewsCount = views.length;
 
@@ -104,10 +55,8 @@ export function SplitViewContainer({
       return;
     }
 
-    const deltaX = event.clientX - dragStart.x;
-    sizes[dragStart.index].width = dragStart.width + deltaX;
-    sizes[dragStart.index + 1].width = dragStart.nextWidth - deltaX;
-    setSizes(sizes.slice());
+    positions[dragStart.index] = event.clientX;
+    setPositions(positions.slice());
   };
 
   const handleMouseUp = () => {
@@ -115,12 +64,10 @@ export function SplitViewContainer({
   };
 
   return (
-    // eslint-disable-next-line jsx-a11y/no-static-element-interactions
     <div
       className="split-view-container"
       onMouseMove={handleMouseMove}
       onMouseUp={handleMouseUp}
-      ref={ref}
     >
       {views.map((view, i) => {
         return (
@@ -128,17 +75,21 @@ export function SplitViewContainer({
             <div
               className="split-view-view"
               style={{
-                position: 'absolute',
-                width: sizes[i]?.width ?? 0,
-                height: sizes[i]?.height ?? 0,
-                left: getOffsetLeft(sizes, i),
+                position: "absolute",
+                width:
+                  i === views.length - 1
+                    ? `calc(100% - ${positions[i - 1]}px)`
+                    : positions[i],
+                height: "100%",
+                left: i === 0 ? 0 : positions[i - 1],
               }}
+              data-split-view-key={view.key}
             >
               {view.element}
             </div>
             {i === viewsCount - 1 ? null : (
               <SplitViewBar
-                sizes={sizes}
+                position={positions[i]}
                 index={i}
                 setDragStart={setDragStart}
               />
@@ -150,36 +101,35 @@ export function SplitViewContainer({
   );
 }
 
+const BUTTON_LEFT_CLICK = 0;
+
 function SplitViewBar({
-  sizes,
+  position,
   index,
   setDragStart,
 }: {
-  sizes: any[];
+  position: number;
   index: number;
-  setDragStart: any;
+  setDragStart: (_: DragStart) => void;
 }) {
   return (
     <div
       className="split-view-bar"
       role="presentation"
       onMouseDown={(event: React.MouseEvent) => {
-        if (event.button !== 0) {
+        if (event.button !== BUTTON_LEFT_CLICK) {
           return;
         }
-
         setDragStart({
           x: event.clientX,
           y: event.clientY,
-          width: sizes[index].width,
-          nextWidth: sizes[index + 1].width,
           index,
         });
       }}
       style={{
-        position: 'absolute',
-        height: '100%',
-        left: getOffsetLeft(sizes, index + 1),
+        position: "absolute",
+        height: "100%",
+        left: position,
       }}
       tabIndex={-1}
     />
