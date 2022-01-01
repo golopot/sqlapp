@@ -1,0 +1,26 @@
+.data-grid-cell {
+  width: 100px;
+  height: 40px;
+  overflow-x: hidden;
+  overflow-y: hidden;
+  padding: 2px 2px;
+  border: 1px black solid;
+  border-top: none;
+  border-left: none;
+
+  &:first-child {
+    border-left: 1px black solid;
+  }
+}
+
+.data-grid-header {
+  .data-grid-cell {
+    border-top: 1px black solid;
+  }
+
+  display: flex;
+}
+
+.data-grid-row {
+  display: flex;
+}

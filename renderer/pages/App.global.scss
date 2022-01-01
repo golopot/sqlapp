@@ -1,11 +1,7 @@
-/*
- * @NOTE: Prepend a `~` to css file paths that are in your node_modules
- *        See https://github.com/webpack-contrib/sass-loader#imports
- */
+@import "../components/data-grid/data-grid.scss";
 
 * {
   box-sizing: border-box;
-  /* outline: solid 0.25rem hsla(210, 100%, 100%, 0.5); */
 }
 
 body {

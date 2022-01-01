@@ -1,7 +1,12 @@
 import React from "react";
 import * as Connector from "./connector/connector";
+import DataGrid from "./data-grid/data-grid";
 import { QueryResult as Result } from "./driver/driver";
-import ReactDataGrid from "react-data-grid";
+import styles from "./QueryResult.module.scss";
+
+function renderCell(v: any) {
+  return String(v);
+}
 
 export default function QueryResult({
   connector,
@@ -48,26 +53,16 @@ export default function QueryResult({
     })();
   }, [connector, database, tableName]);
 
-  function handleGridRowsUpdated({ fromRow, toRow, updated }) {
-    for (let i = fromRow; i <= toRow; i++) {
-      rows[i] = { ...rows[i], ...updated };
-    }
-    setData({
-      type: "Rows",
-      columns,
-      rows,
-    });
-  }
-
   return (
-    <div>
-      <ReactDataGrid
+    <div className={styles.queryResult}>
+      <DataGrid
         columns={columns.map((x) => ({
           key: x.name,
           name: x.name,
           editable: true,
         }))}
         rows={rows}
+        renderCell={renderCell}
       />
     </div>
   );

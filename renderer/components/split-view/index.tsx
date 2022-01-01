@@ -36,6 +36,7 @@ function getLinePositions(views: ViewProp[]): number[] {
   return positions;
 }
 
+// TODO: implement direction = "vertical"
 export function SplitViews({
   views,
   direction = "horizontal",
