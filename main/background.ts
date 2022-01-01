@@ -1,6 +1,9 @@
 import { app } from "electron";
 import serve from "electron-serve";
 import { createWindow } from "./helpers";
+import installExtension, {
+  REACT_DEVELOPER_TOOLS,
+} from "electron-devtools-installer";
 
 const isProd: boolean = process.env.NODE_ENV === "production";
 
@@ -14,6 +17,7 @@ if (isProd) {
 
 (async () => {
   await app.whenReady();
+  await installExtension(REACT_DEVELOPER_TOOLS);
 
   const mainWindow = createWindow("main", {
     width: 1000,
